@@ -14,7 +14,7 @@
     top: 0;
     display: flex;
     align-items: center;
-    background-color: white !important;
+    /* background-color: white !important; */
 }
 
 .searchBar{
@@ -127,5 +127,10 @@ svg {
     display: flex;
     align-items: center;
     margin-top: 78px;
+    justify-content: space-evenly;
+    color: #4b566b;
     
 }
+/* .category{
+    
+} */
