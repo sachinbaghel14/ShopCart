@@ -1,0 +1,13 @@
+.product-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 30px;
+}
+.home-title{
+    text-align: center;
+    padding-top: 30px;
+    font-weight: 800;
+    font-size: 28px;
+    color: #373f50;
+}

@@ -55,7 +55,7 @@
     transition-timing-function: ease-in-out;
 }
 
-svg {
+.headerSvg {
     color: #4b566b;
 }
 
