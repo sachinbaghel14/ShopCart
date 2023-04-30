@@ -1,20 +1,28 @@
 .product{
     width: 312px;
-    height: 367px;
+    height: fit-content;
     display: flex;
     margin: 10px;
     padding: 0px 8px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    z-index: 0;
+    transition: 0.5s ease;
+    background-color: white;
+    
 }
 .product:hover{
     border-color: #f0f0f0;
     box-shadow: 0 0 20px 10px #F0f0f0;
+    z-index: 5;
+    /* transform:scale(1.3); */
+    /* height: 467px; */
     /* box-shadow: none; */
 }
 .productDetails{
     width: 100%;
+    height: fit-content;
     padding: 8px 20px;
 }
 .wishlistDiv{
@@ -26,6 +34,7 @@
     align-self: flex-end;
     background-color: #F3F5F9;
     cursor: pointer;
+    margin-top: 6px;
 }
 .wishlistDiv:hover{
     color: #fe696a;
@@ -71,10 +80,74 @@
 }
 .RCdiv svg{
     color: #fea569!important;
+    margin: 0px 1px;
 }
 .ratingCount{
     font-size: 12px;
     margin: 0;
     /* height: 12px !important; */
     align-self: center;
+}
+.extraOptions{
+    position: absolute;
+    width:inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 460px;
+    border-radius: 0.4375rem;
+    background-color: #fff;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1;
+    box-shadow: 0 20px 20px 2px #F0f0f0;
+    transition: 0.5s ease;
+    
+}
+
+.bdgS input{
+    display: none;
+}
+.bdgS input:checked + .sizeLabel{
+    border: 1px solid #fe696a;
+}
+.sizeLabel{
+    position: relative;
+    color: #383a3e;
+    border: 1px solid #dee2e6;
+    border-radius: 20%;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.sizeLabel:hover{
+    border: 1px solid #a3a6a9;
+}
+.bdgS{
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.cartBtn{
+    margin-bottom: 20px;
+    width: 80%;
+    background-color:  #fe696a;
+    color: white;
+    gap:5px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.cartBtn:hover{
+    background-color:#fe4042;
+    color: white;
 }

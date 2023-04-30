@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import styles from "./ProductCard.module.css"
 
 import { Tooltip } from "react-bootstrap"
@@ -6,18 +7,25 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 
 
 export function ProductCard() {
-    let rating = 4.5
+    const [style, setStyle] = useState({ opacity: '0', visibility: 'visible' });
+
+    let rating = 3.5
     var fillStar = Array(Math.floor(rating)).fill(0);
     var halfFIllStar = false;
     var star = Array(5 - Math.floor(rating)).fill(0)
 
-    if (rating != Math.floor(rating)) {
+    if (rating !== Math.floor(rating)) {
         star = Array(4 - Math.floor(rating)).fill(0)
         halfFIllStar = true
     }
 
     return (
-        <div className={styles.product}>
+        <div className={styles.product} onMouseEnter={e => {
+            console.log("hii")
+            setStyle({ opacity: '1', visibility: 'visible' })
+        }} onMouseLeave={e => {
+            setStyle({ opacity: '0', visibility: 'hidden' })
+        }}>
             <OverlayTrigger
                 delay={{ hide: 450, show: 300 }}
                 overlay={(props) => (
@@ -66,14 +74,24 @@ export function ProductCard() {
                         </div>
                     </div>
                 </div>
-                {/* <div>
-                    <div>
-                    <span className={`badge bg-secondary ${styles.bdg}`}>XS</span>
-                    <span className={`badge bg-secondary ${styles.bdg}`}>S</span>
-                    <span className={`badge bg-secondary ${styles.bdg}`}>M</span>
-                    <span className={`badge bg-secondary ${styles.bdg}`}>L</span>
-                    </div>
-                </div> */}
+
+            </div>
+            <div className={styles.extraOptions} style={style}>
+
+                <div className={styles.bdgS}>
+                    <input type="radio" name="size" id="XS"></input>
+                    <label className={styles.sizeLabel} for="XS">XS</label>
+                    <input type="radio" name="size" id="S"></input>
+                    <label className={styles.sizeLabel} for="S">S</label>
+                    <input type="radio" name="size" id="M" checked="checked"></input>
+                    <label className={styles.sizeLabel} for="M">M</label>
+                    <input type="radio" name="size" id="L"></input>
+                    <label className={styles.sizeLabel} for="L">L</label>
+                </div>
+                <button className={`btn ${styles.cartBtn}`}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class={`bi bi-cart3 ${styles.crtBtnIcon}`} viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                </svg> Add to Cart</button>
             </div>
         </div>
     )
