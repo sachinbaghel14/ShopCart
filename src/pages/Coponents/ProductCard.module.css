@@ -10,6 +10,7 @@
     z-index: 0;
     transition: 0.5s ease;
     background-color: white;
+    cursor: pointer;
     
 }
 .product:hover{
@@ -109,7 +110,7 @@
 .bdgS input{
     display: none;
 }
-.bdgS input:checked + .sizeLabel{
+.sizeInput:checked + .sizeLabel{
     border: 1px solid #fe696a;
 }
 .sizeLabel{

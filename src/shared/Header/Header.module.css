@@ -57,6 +57,7 @@
 
 .headerSvg {
     color: #4b566b;
+    cursor: pointer;
 }
 
 .login, .cart {
@@ -64,6 +65,7 @@
     align-items: center;
     justify-content: center;
     gap: 5px;
+    cursor: pointer;
     /* border: 1px solid #4b566b;
     padding: 6px 12px 6px 12px;
     border-radius: 10px; */

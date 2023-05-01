@@ -2,13 +2,34 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    padding-top: 30px;
+    padding: 40px 0px;
     /* gap:20px */
 }
 .home-title{
     text-align: center;
-    padding-top: 30px;
+    padding-top: 40px;
     font-weight: 800;
     font-size: 28px;
     color: #373f50;
+}
+.more-Btn{
+    margin-bottom: 40px;
+    width: fit-content;
+    background-color: transparent;
+    padding: 10px 22px;
+    color: #4e54c8;;
+    gap:5px;
+    font-size: 15px;
+    border: 1px solid #4e54c8;
+    /* align-self: center; */
+}
+.more-Btn:hover{
+    background-color: #4e54c8;
+    color: white;
+}
+.home-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }

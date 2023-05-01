@@ -6,7 +6,7 @@ import { Tooltip } from "react-bootstrap"
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 
 
-export function ProductCard() {
+export function ProductCard(props) {
     const [style, setStyle] = useState({ opacity: '0', visibility: 'visible' });
 
     let rating = 3.5
@@ -21,7 +21,6 @@ export function ProductCard() {
 
     return (
         <div className={styles.product} onMouseEnter={e => {
-            console.log("hii")
             setStyle({ opacity: '1', visibility: 'visible' })
         }} onMouseLeave={e => {
             setStyle({ opacity: '0', visibility: 'hidden' })
@@ -79,14 +78,14 @@ export function ProductCard() {
             <div className={styles.extraOptions} style={style}>
 
                 <div className={styles.bdgS}>
-                    <input type="radio" name="size" id="XS"></input>
-                    <label className={styles.sizeLabel} for="XS">XS</label>
-                    <input type="radio" name="size" id="S"></input>
-                    <label className={styles.sizeLabel} for="S">S</label>
-                    <input type="radio" name="size" id="M" checked="checked"></input>
-                    <label className={styles.sizeLabel} for="M">M</label>
-                    <input type="radio" name="size" id="L"></input>
-                    <label className={styles.sizeLabel} for="L">L</label>
+                    <input type="radio" name={`size${props.sizeName}`} id={`XS${props.sizeName}`} className={styles.sizeInput}></input>
+                    <label className={styles.sizeLabel} htmlFor={`XS${props.sizeName}`}>XS</label>
+                    <input type="radio" name={`size${props.sizeName}`} id={`S${props.sizeName}`} className={styles.sizeInput}></input>
+                    <label className={styles.sizeLabel} htmlFor={`S${props.sizeName}`}>S</label>
+                    <input type="radio" name={`size${props.sizeName}`} id={`M${props.sizeName}`}  className={styles.sizeInput} defaultChecked></input>
+                    <label className={styles.sizeLabel} htmlFor={`M${props.sizeName}`} >M</label>
+                    <input type="radio" name={`size${props.sizeName}`} id={`L${props.sizeName}`} className={styles.sizeInput}></input>
+                    <label className={styles.sizeLabel} htmlFor={`L${props.sizeName}`}>L</label>
                 </div>
                 <button className={`btn ${styles.cartBtn}`}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class={`bi bi-cart3 ${styles.crtBtnIcon}`} viewBox="0 0 16 16">
