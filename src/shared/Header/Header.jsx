@@ -80,7 +80,7 @@ export function Headers() {
       <a className={styles.category}>Electronics</a>
       <a className={styles.category}>Jewelery</a>
       <a className={styles.category}>Men's Clothing</a>
-      <a className={styles.category}>Whomen's clothing</a>
+      <a className={styles.category}>Women's clothing</a>
       </nav>
     </div>
   )
