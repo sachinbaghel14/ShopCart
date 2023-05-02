@@ -111,7 +111,7 @@ export function Footer() {
                     <img className={styles.cardImg} src={card} alt="Cards"></img>
                 </div>
             </div>
-            <div className={styles.copyRight}>© All rights reserved. Made by Sachin Baghel</div>
+            <div className={styles.copyRight}>© All rights reserved. Made by <a href="">Sachin Baghel</a></div>
         </div>
     )
 }

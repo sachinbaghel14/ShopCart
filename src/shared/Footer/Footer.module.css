@@ -131,3 +131,9 @@ margin-bottom: 24px;
     opacity: 0.5;
     margin-left: 150px;
 }
+.copyRight a{
+    /* color: #fe696a; */
+    color: white;
+    text-decoration: none;
+    
+}

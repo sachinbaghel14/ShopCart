@@ -9,7 +9,7 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 export function ProductCard(props) {
     const [style, setStyle] = useState({ opacity: '0', visibility: 'visible' });
 
-    let rating = 3.5
+    let rating = props.item.rating.rate
     var fillStar = Array(Math.floor(rating)).fill(0);
     var halfFIllStar = false;
     var star = Array(5 - Math.floor(rating)).fill(0)
@@ -42,12 +42,12 @@ export function ProductCard(props) {
 
                 </div>
             </OverlayTrigger>
-            <img src="https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg" className={`card-img-top ${styles.productImg}`} alt="..."></img>
+            <img src={props.item.image} className={`card-img-top ${styles.productImg}`} alt="..."></img>
             <div className={styles.productDetails}>
-                <p className={styles.category}>Sneakers & Keds</p>
-                <h6 className={styles.name}>Women Colorblock Sneakers</h6>
+                <p className={styles.category}>{props.item.category}</p>
+                <h6 className={styles.name}>{props.item.title}</h6>
                 <div className={styles.PRdiv}>
-                    <div><span className={styles.price}>&#8377;154.<span className={styles.priceDec}>00</span></span></div>
+                    <div><span className={styles.price}>&#8377;{props.item.price}.<span className={styles.priceDec}>00</span></span></div>
                     <div className={styles.RCdiv}>
                         <div>
                             {
@@ -69,7 +69,7 @@ export function ProductCard(props) {
                             }
                         </div>
                         <div>
-                            <p className={styles.ratingCount}>(536)</p>
+                            <p className={styles.ratingCount}>({props.item.rating.count})</p>
                         </div>
                     </div>
                 </div>
