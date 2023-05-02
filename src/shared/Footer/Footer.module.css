@@ -86,8 +86,8 @@ margin-bottom: 24px;
 }
 .socialIcons{
     display: flex;
-    gap: 5px;
-    margin-bottom: 16px;
+    gap: 10px;
+    margin-bottom: 24px;
 }
 .socialIcons div{
     color: white;
@@ -100,6 +100,24 @@ margin-bottom: 24px;
     justify-content: center;
     align-items: center;
     border-radius: 10%;
+}
+.socialIcons div:hover{
+    background-color: white;
+}
+.twitter:hover{
+    color:#00acee;
+}
+.facebook:hover{
+    color:#3b5998
+}
+.insta:hover{
+    color: #fa7e1e;
+}
+.pint:hover{
+    color:#fa7e1e;
+}
+.youtube:hover{
+    color:#FF0000;
 }
 .cardImg{
     height: 28px;
