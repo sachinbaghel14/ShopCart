@@ -2,7 +2,7 @@ import { useState } from "react"
 import styles from "./login.module.css"
 import { Header } from "../../shared/Header/Header"
 import { Footer } from "../../shared/Footer/Footer"
-import { Navigate, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export function Login() {
     const [user, setUser] = useState({ name: "", email: "", password: "" })
