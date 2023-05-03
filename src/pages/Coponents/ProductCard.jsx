@@ -4,10 +4,13 @@ import styles from "./ProductCard.module.css"
 
 import { Tooltip } from "react-bootstrap"
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
+import { useDispatch } from "react-redux";
+import { addItem, increaseQty } from "../../store/slices/cartSlices";
 
 
 export function ProductCard(props) {
     const [style, setStyle] = useState({ opacity: '0', visibility: 'visible' });
+    const dispatchEvent = useDispatch()
 
     let rating = props.item.rating.rate
     var fillStar = Array(Math.floor(rating)).fill(0);
@@ -17,6 +20,44 @@ export function ProductCard(props) {
     if (rating !== Math.floor(rating)) {
         star = Array(4 - Math.floor(rating)).fill(0)
         halfFIllStar = true
+    }
+    function getDecimalPart(num) {
+        if (Number.isInteger(num)) {
+            return '00';
+        }
+
+        const decimalStr = num.toString().split('.')[1];
+        return Number(decimalStr);
+    }
+
+    function handleAddToCartClick() {
+
+        // if cart already exists
+        const cartItems = localStorage.getItem('cartItems')
+        if (!cartItems) {
+          var arrayOfItems = []
+        } else {
+          var arrayOfItems = JSON.parse(cartItems)
+        }
+        // add the product to cart.
+        const cartItem = {
+          product: props.item,
+          quantity: 1,
+        }
+        const itemAreadyExistsIndex = arrayOfItems.findIndex(
+          (i) => i.product.id == props.item.id,
+        )
+        // if product already added to cart, increase the quantity.
+        // if product exists (index!=-1)
+        if (itemAreadyExistsIndex != -1) {
+          arrayOfItems[itemAreadyExistsIndex].quantity += 1
+        } else {
+          arrayOfItems.push(cartItem)
+        }
+        localStorage.setItem('cartItems', JSON.stringify(arrayOfItems))
+        dispatchEvent(addItem(arrayOfItems));
+        // notifyAboutCartChanges(arrayOfItems.length)
+
     }
 
     return (
@@ -45,9 +86,9 @@ export function ProductCard(props) {
             <img src={props.item.image} className={`card-img-top ${styles.productImg}`} alt="..."></img>
             <div className={styles.productDetails}>
                 <p className={styles.category}>{props.item.category}</p>
-                <h6 className={styles.name}>{props.item.title}</h6>
+                <div data-rows="2" className={styles.name}>{props.item.title}</div>
                 <div className={styles.PRdiv}>
-                    <div><span className={styles.price}>&#8377;{props.item.price}.<span className={styles.priceDec}>00</span></span></div>
+                    <div><span className={styles.price}>&#8377;{Math.floor(props.item.price)}.<span className={styles.priceDec}>{getDecimalPart(props.item.price)}</span></span></div>
                     <div className={styles.RCdiv}>
                         <div>
                             {
@@ -82,15 +123,15 @@ export function ProductCard(props) {
                     <label className={styles.sizeLabel} htmlFor={`XS${props.sizeName}`}>XS</label>
                     <input type="radio" name={`size${props.sizeName}`} id={`S${props.sizeName}`} className={styles.sizeInput}></input>
                     <label className={styles.sizeLabel} htmlFor={`S${props.sizeName}`}>S</label>
-                    <input type="radio" name={`size${props.sizeName}`} id={`M${props.sizeName}`}  className={styles.sizeInput} defaultChecked></input>
+                    <input type="radio" name={`size${props.sizeName}`} id={`M${props.sizeName}`} className={styles.sizeInput} defaultChecked></input>
                     <label className={styles.sizeLabel} htmlFor={`M${props.sizeName}`} >M</label>
                     <input type="radio" name={`size${props.sizeName}`} id={`L${props.sizeName}`} className={styles.sizeInput}></input>
                     <label className={styles.sizeLabel} htmlFor={`L${props.sizeName}`}>L</label>
                 </div>
-                <button className={`btn ${styles.cartBtn}`}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class={`bi bi-cart3 ${styles.crtBtnIcon}`} viewBox="0 0 16 16">
-                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                </svg> Add to Cart</button>
+                <button className={`btn ${styles.cartBtn}`} onClick={handleAddToCartClick}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class={`bi bi-cart3 ${styles.crtBtnIcon}`} viewBox="0 0 16 16">
+                        <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                    </svg> Add to Cart</button>
             </div>
         </div>
     )
