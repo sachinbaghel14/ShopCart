@@ -133,6 +133,12 @@
     color: #4b566b;
     
 }
-/* .category{
-    
-} */
+.category{
+    cursor: pointer;
+    transition: 0.5s ease;
+    text-decoration: none;
+    color: #4b566b !important;
+}
+.category:hover{
+    color: #fe696a !important;
+}

@@ -6,14 +6,19 @@ import { createSlice } from "@reduxjs/toolkit";
 const counterSlice = createSlice({
     name: 'counterSlice',
     initialState: {
-        cartItems: []
+        cartItems: [],
+        wishlistItems:[],
+        fetchProducts:[],
     },
     reducers: {
         addItem: (state, action) => {
             state.cartItems = action.payload;
         },
-        removeItem: (state, action) => {
-
+        addWishlistItem: (state, action) => {
+            state.wishlistItems = action.payload;
+        },
+        addFetchProducts:(state, action)=>{
+            state.fetchProducts = action.payload
         },
         increaseQty: (state, action) => {
             // const index = state.cartItems.indexOf(action.payload)
@@ -25,5 +30,7 @@ const counterSlice = createSlice({
 });
 
 export default counterSlice.reducer;
-export const { addItem, removeItem, increaseQty } = counterSlice.actions;
+export const { addItem, addWishlistItem, addFetchProducts } = counterSlice.actions;
 export const cartQuantity = (state) => (state.cartItems.length)
+export const getWishlist = (state) => (state.wishlistItems)
+export const getfetch = (state) => (state.fetchProducts)

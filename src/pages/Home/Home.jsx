@@ -5,10 +5,13 @@ import { useEffect, useState } from "react";
 import HomeCarousel from "../Coponents/Carousel";
 import { ProductCard } from "../Coponents/ProductCard";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addFetchProducts } from "../../store/slices/cartSlices";
 
 export function Home() {
     var ratings = Array(Math.floor(24)).fill(0);
     var i = 0
+    const dispatch = useDispatch()
     const [products, setProducts] = useState([])
 
     const navigate = useNavigate();
@@ -24,7 +27,7 @@ export function Home() {
     }, [])
     return (
         <div>
-        <Header></Header>
+            <Header></Header>
             <HomeCarousel></HomeCarousel>
             <div className="home-body">
                 <h2 className="home-title">Trending products</h2>
@@ -37,9 +40,16 @@ export function Home() {
                     })}
                 </div>
 
-                <button className="btn more-Btn" onClick={()=>(navigate("/more-products") )} >More products &#62;</button>
+                <button className="btn more-Btn" onClick={() => {
+                    (navigate("/more-products", {
+                        state: {
+                            title: 'Trending products',
+                            url: 'https://fakestoreapi.com/products'
+                        }
+                    })); dispatch(addFetchProducts(0))
+                }} >More products &#62;</button>
             </div>
-        <Footer></Footer>
+            <Footer></Footer>
         </div>
 
     )

@@ -1,19 +1,38 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./ProductCard.module.css"
 import { Rating } from "./Rating";
 import { Tooltip } from "react-bootstrap"
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
-import { useDispatch } from "react-redux";
-import { addItem} from "../../store/slices/cartSlices";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, addWishlistItem, getWishlist } from "../../store/slices/cartSlices";
 import { useNavigate } from "react-router-dom";
 
 export function ProductCard(props) {
+    const wishlist = useSelector(getWishlist)
+    const [inWishlist, setInWishlist] = useState(false)
     const [style, setStyle] = useState({ opacity: '0', visibility: 'visible' });
     const dispatchEvent = useDispatch()
     const navigate = useNavigate()
-    function redirectToProduct(){
-        navigate("/product",{
+    const getWishlistinfo = useSelector(getWishlist)
+
+    useEffect(() => {
+        const whishlistItems = localStorage.getItem('whishlistItems')
+        if (whishlistItems) {
+            var arrayOfWishlist = JSON.parse(whishlistItems)
+            const itemAreadyExistsIndex = arrayOfWishlist.findIndex(
+                (i) => i.product.id == props.item.id,)
+                if (itemAreadyExistsIndex != -1) {
+                    setInWishlist(true);
+                } else {
+                    setInWishlist(false);
+                }
+                console.log("haaayee")
+        }
+    }, [getWishlistinfo])
+    
+    function redirectToProduct() {
+        navigate("/product", {
             state: props.item
         })
     }
@@ -56,6 +75,34 @@ export function ProductCard(props) {
 
     }
 
+    function handleWishlist(){
+        const whishlistItems = localStorage.getItem('whishlistItems')
+        if (!whishlistItems) {
+            var arrayOfWishlist = []
+        } else {
+            var arrayOfWishlist = JSON.parse(whishlistItems)
+        }
+        // add the product to cart.
+        const whishlistItem = {
+            product: props.item,
+        }
+        const itemAreadyExistsIndex = arrayOfWishlist.findIndex(
+            (i) => i.product.id == props.item.id,
+        )
+        // if product already added to cart, increase the quantity.
+        // if product exists (index!=-1)
+        if (itemAreadyExistsIndex != -1) {
+            arrayOfWishlist.splice(itemAreadyExistsIndex,1)
+            setInWishlist(false);
+        } else {
+            setInWishlist(true);
+            arrayOfWishlist.push(whishlistItem)
+        }
+        localStorage.setItem('whishlistItems', JSON.stringify(arrayOfWishlist))
+        dispatchEvent(addWishlistItem(arrayOfWishlist));
+        console.log(wishlist)
+    }
+
     return (
         <div className={styles.product} onMouseEnter={e => {
             setStyle({ opacity: '1', visibility: 'visible' })
@@ -72,11 +119,14 @@ export function ProductCard(props) {
                 )}
                 placement="left"
             >
-                <div className={styles.wishlistDiv}>
+                <div onClick={handleWishlist} className={styles.wishlistDiv}>
 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                    {!inWishlist &&<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
                         <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
-                    </svg>
+                    </svg>}
+                    {inWishlist && <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class={`bi bi-heart-fill ${styles.wishlistFill}`} viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                    </svg>}
 
                 </div>
             </OverlayTrigger>

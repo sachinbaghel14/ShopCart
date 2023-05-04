@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Login } from './pages/Login/Login';
 import { SignUp } from './pages/SignUp/SignUp';
 import { Product } from './pages/Product/Product';
+import { Wishlist } from './pages/Wishlist/Wishlist';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path='login' element={<Login/>} ></Route>
           <Route path='signup' element={<SignUp/>} ></Route>
           <Route path='product' element={<Product/>} ></Route>
+          <Route path='wishlist' element={<Wishlist/>} ></Route>
           {/* <Route path='login' element={<Login />} ></Route> */}
         </Routes>
       </BrowserRouter>

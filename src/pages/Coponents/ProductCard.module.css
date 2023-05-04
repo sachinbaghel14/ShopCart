@@ -39,9 +39,15 @@
     cursor: pointer;
     margin-top: 6px;
 }
+.wishlistFill{
+    color: #fe696a !important;
+}
 
 .wishlistDiv:hover {
     color: #fe696a;
+}
+.wishlistDiv svg:focus{
+    background-color: red !important;
 }
 
 .hint {

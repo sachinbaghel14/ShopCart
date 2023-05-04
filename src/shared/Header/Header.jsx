@@ -2,8 +2,8 @@ import styles from "./Header.module.css"
 import logo from "../../assets/logo.png"
 import { Tooltip } from "react-bootstrap"
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
-import { useSelector } from "react-redux"
-import { cartQuantity } from "../../store/slices/cartSlices"
+import { useDispatch, useSelector } from "react-redux"
+import { addFetchProducts, cartQuantity } from "../../store/slices/cartSlices"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -17,13 +17,23 @@ export function Header() {
 
   //get data from local storage
   const cartItemsLength = useSelector(cartQuantity)
+  const dispatch = useDispatch();
   // useEffect(()=>{
   //   const userDetails = localStorage.getItem('userDetails')
   //   if(userDetails){
   //     setLoggedInStatus(true)
   //   }
   // },[])
-
+  function handleWishlist() {
+    navigate("/wishlist")
+  }
+  function handleall() {
+    navigate("/more-products", {
+      state: {
+        title: 'All products'
+      }
+    })
+  }
 
   return (
     <div>
@@ -43,7 +53,7 @@ export function Header() {
         </form>
 
 
-        <div className={styles.rightHeader}>
+        <div className={styles.rightHeader} onClick={handleWishlist}>
 
           {/* Wishlist */}
           <div>
@@ -64,7 +74,7 @@ export function Header() {
 
           {/* sign in / my account */}
 
-          <div className={styles.login} onClick={()=>(navigate("/login"))}>
+          <div className={styles.login} onClick={() => (navigate("/login"))}>
             <div>
               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class={`bi bi-person ${styles.headerSvg}`} viewBox="0 0 16 16">
                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
@@ -95,11 +105,40 @@ export function Header() {
 
       {/* bottam header */}
       <nav className={`navbar navbar-light bg-light ${styles.headerbtm}`}>
-        <a className={styles.category}>All</a>
-        <a className={styles.category}>Electronics</a>
-        <a className={styles.category}>Jewelery</a>
-        <a className={styles.category}>Men's Clothing</a>
-        <a className={styles.category}>Women's clothing</a>
+        <a onClick={() => {(navigate("/more-products", {
+          state: {
+            title: 'All products',
+            url: 'https://fakestoreapi.com/products'
+          }
+        }));dispatch(addFetchProducts(0))}} className={styles.category}>All</a>
+
+        <a onClick={() => {(navigate("/more-products", {
+          state: {
+            title: 'Electronics',
+            url: 'https://fakestoreapi.com/products/category/electronics'
+          }
+        }));dispatch(addFetchProducts(1))}} className={styles.category}>Electronics</a>
+
+        <a onClick={() => {(navigate("/more-products", {
+          state: {
+            title: 'Jewelery',
+            url: 'https://fakestoreapi.com/products/category/jewelery'
+          }
+        }));dispatch(addFetchProducts(2))}} className={styles.category}>Jewelery</a>
+
+        <a onClick={() => {(navigate("/more-products", {
+          state: {
+            title: "Men's Clothing",
+            url: "https://fakestoreapi.com/products/category/men's clothing"
+          }
+        }));dispatch(addFetchProducts(3))}} className={styles.category}>Men's Clothing</a>
+
+        <a onClick={() => {(navigate("/more-products", {
+          state: {
+            title: "Women's clothing",
+            url: "https://fakestoreapi.com/products/category/women's clothing",
+          }
+        }));dispatch(addFetchProducts(4))}} className={styles.category}>Women's clothing</a>
       </nav>
     </div>
   )
