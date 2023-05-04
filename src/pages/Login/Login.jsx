@@ -3,11 +3,13 @@ import styles from "./login.module.css"
 import { Header } from "../../shared/Header/Header"
 import { Footer } from "../../shared/Footer/Footer"
 import { useNavigate } from "react-router-dom"
+import { addUser } from "../../store/slices/cartSlices"
+import { useDispatch } from "react-redux"
 
 export function Login() {
-    const [user, setUser] = useState({email: "", password: "" })
+    const [user, setUser] = useState({ email: "", password: "" })
     const navigate = useNavigate();
-
+    const dispatch = useDispatch()
     function handleLogin() {
         console.log(user)
         fetch('https://fakestoreapi.com/auth/login', {
@@ -20,7 +22,28 @@ export function Login() {
             .then((response) => {
                 console.log(response.json())
                 console.log("user is logged in")
-                navigate('/')
+                const userDetails = localStorage.getItem('userDetails')
+                if (user) {
+                    var arrayOfItems = JSON.parse(userDetails)
+                    const itemAreadyExistsIndex = arrayOfItems.findIndex(
+                        (i) => i.email === user.email,
+                    )
+                    if (itemAreadyExistsIndex !== -1) {
+                        if (arrayOfItems[itemAreadyExistsIndex].password === user.password) {
+                            arrayOfItems[itemAreadyExistsIndex].loggedin = true
+                            localStorage.setItem('userDetails', JSON.stringify(arrayOfItems));
+                            console.log("user found")
+                            dispatch(addUser(arrayOfItems[itemAreadyExistsIndex]))
+                            navigate('/')
+                        } else {
+                            alert("invalid email or password")
+                        }
+                    } else {
+                        alert("invalid email or password")
+                    }
+
+                }
+                
             })
             .catch((err) => {
                 console.log(err)

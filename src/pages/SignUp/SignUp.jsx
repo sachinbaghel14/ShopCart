@@ -5,13 +5,13 @@ import { Footer } from "../../shared/Footer/Footer"
 import { useNavigate } from "react-router-dom"
 
 
+
 export function SignUp() {
 
     const [user, setUser] = useState({email: "", name: "", password: "",confirmPassword:"" })
     const navigate = useNavigate();
 
     function handleSignUp() {
-        console.log(user)
         fetch('https://fakestoreapi.com/users', {
             method: "POST",
             body: JSON.stringify(user),
@@ -22,6 +22,7 @@ export function SignUp() {
             .then((response) => {
                 console.log(response.json())
                 alert("Signup Successful, Please Signin")
+                localStorage.setItem('userDetails',JSON.stringify([{name:user.name, email:user.email, password:user.password, loggedin:false}]));
                 navigate("/login");
             })
             .catch((err) => {

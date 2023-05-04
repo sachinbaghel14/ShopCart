@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { addFetchProducts, addItem, cartQuantity } from "../../store/slices/cartSlices"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { getUser } from "../../store/slices/cartSlices"
 
 
 
@@ -17,6 +18,8 @@ export function Header() {
 
   //get data from local storage
   const cartItemsLength = useSelector(cartQuantity)
+  const user = useSelector(getUser)
+  console.log(user)
   const dispatch = useDispatch();
   useEffect(()=>{
     const cartItems = localStorage.getItem('cartItems')
@@ -82,7 +85,8 @@ export function Header() {
               </svg>
             </div>
             <div className={styles.signInTitle}>
-              <p>Hello, Sign in</p>
+              {user.loggedin && <p>Hello, {user.name}</p>}
+              {!user.loggedin && <p>Hello, Sign in</p>}
               <h6>My Account</h6>
             </div>
           </div>

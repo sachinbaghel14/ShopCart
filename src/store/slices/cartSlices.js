@@ -34,7 +34,8 @@ const counterSlice = createSlice({
 });
 
 export default counterSlice.reducer;
-export const { addItem, addWishlistItem, addFetchProducts } = counterSlice.actions;
+export const { addItem, addWishlistItem, addFetchProducts, addUser} = counterSlice.actions;
 export const cartQuantity = (state) => (state.cartItems.length)
 export const getWishlist = (state) => (state.wishlistItems.length)
 export const getfetch = (state) => (state.fetchProducts)
+export const getUser = (state) => (state.userdetails)
