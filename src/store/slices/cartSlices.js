@@ -9,6 +9,7 @@ const counterSlice = createSlice({
         cartItems: [],
         wishlistItems:[],
         fetchProducts:[],
+        userdetails:[],
     },
     reducers: {
         addItem: (state, action) => {
@@ -19,6 +20,9 @@ const counterSlice = createSlice({
         },
         addFetchProducts:(state, action)=>{
             state.fetchProducts = action.payload
+        },
+        addUser:(state,action)=>{
+            state.userdetails = action.payload
         },
         increaseQty: (state, action) => {
             // const index = state.cartItems.indexOf(action.payload)

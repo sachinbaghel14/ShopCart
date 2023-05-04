@@ -7,12 +7,12 @@ import { useNavigate } from "react-router-dom"
 
 export function SignUp() {
 
-    const [user, setUser] = useState({ name: "", email: "", password: "" })
+    const [user, setUser] = useState({email: "", name: "", password: "",confirmPassword:"" })
     const navigate = useNavigate();
 
     function handleSignUp() {
         console.log(user)
-        fetch("http://localhost:4100/api/auth/register", {
+        fetch('https://fakestoreapi.com/users', {
             method: "POST",
             body: JSON.stringify(user),
             headers: {
@@ -21,7 +21,8 @@ export function SignUp() {
         })
             .then((response) => {
                 console.log(response.json())
-                console.log("user is created")
+                alert("Signup Successful, Please Signin")
+                navigate("/login");
             })
             .catch((err) => {
                 console.log(err)
@@ -89,16 +90,16 @@ export function SignUp() {
                             ></input>
                         </div>
                         <div className="mb-3">
-                            <label for="password" className={styles.formLabel}>
+                            <label for="confirmPassword" className={styles.formLabel}>
                                 Confirm password
                             </label>
                             <input
                                 type="password" onInput={(event) => {
-                                    setUser({ ...user, password: event.target.value })
+                                    setUser({ ...user, confirmPassword: event.target.value })
                                 }}
-                                value={user.password}
+                                value={user.confirmPassword}
                                 className={`form-control ${styles.formInput}`}
-                                id="password"
+                                id="confirmPassword"
                                 placeholder="Confirm Your password"
                             ></input>
                         </div>

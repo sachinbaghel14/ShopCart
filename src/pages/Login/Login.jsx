@@ -5,12 +5,12 @@ import { Footer } from "../../shared/Footer/Footer"
 import { useNavigate } from "react-router-dom"
 
 export function Login() {
-    const [user, setUser] = useState({ name: "", email: "", password: "" })
+    const [user, setUser] = useState({email: "", password: "" })
     const navigate = useNavigate();
 
     function handleLogin() {
         console.log(user)
-        fetch("http://localhost:4100/api/auth/register", {
+        fetch('https://fakestoreapi.com/auth/login', {
             method: "POST",
             body: JSON.stringify(user),
             headers: {
@@ -19,7 +19,8 @@ export function Login() {
         })
             .then((response) => {
                 console.log(response.json())
-                console.log("user is created")
+                console.log("user is logged in")
+                navigate('/')
             })
             .catch((err) => {
                 console.log(err)
@@ -79,7 +80,7 @@ export function Login() {
                                 <label class="form-check-label" for="si-remember">Remember me</label>
                             </div><a class={`fs-sm ${styles.forget}`} href="#">Forgot password?</a>
                         </div>
-                        <button onClick={handleLogin} type="button" className={`btn ${styles.loginBtn}`}>Login</button>
+                        <button onClick={handleLogin} type="button" className={`btn ${styles.loginBtn}`}>Signin</button>
                     </form>
                     <h6>New to ShopCart?</h6>
                     <button type="button" className={`btn ${styles.signupBtn}`} onClick={() => (navigate("/signup"))}>Create your ShopCart account</button>
