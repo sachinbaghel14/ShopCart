@@ -27,7 +27,6 @@ export function ProductCard(props) {
                 } else {
                     setInWishlist(false);
                 }
-                console.log("haaayee")
         }
     }, [getWishlistinfo])
     
@@ -82,14 +81,14 @@ export function ProductCard(props) {
         } else {
             var arrayOfWishlist = JSON.parse(whishlistItems)
         }
-        // add the product to cart.
+        // add the product to wishlist.
         const whishlistItem = {
             product: props.item,
         }
         const itemAreadyExistsIndex = arrayOfWishlist.findIndex(
             (i) => i.product.id == props.item.id,
         )
-        // if product already added to cart, increase the quantity.
+        // if product already added to wishlist
         // if product exists (index!=-1)
         if (itemAreadyExistsIndex != -1) {
             arrayOfWishlist.splice(itemAreadyExistsIndex,1)
@@ -100,7 +99,6 @@ export function ProductCard(props) {
         }
         localStorage.setItem('whishlistItems', JSON.stringify(arrayOfWishlist))
         dispatchEvent(addWishlistItem(arrayOfWishlist));
-        console.log(wishlist)
     }
 
     return (

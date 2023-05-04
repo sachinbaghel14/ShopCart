@@ -1,0 +1,21 @@
+.title{
+    background-color: #373F50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 0px;
+}
+.title h3{
+    font-size: 28px;
+    font-weight: 600;
+    color: white;
+    margin: 0;
+}
+.cartContainer{
+    display: flex;
+    padding: 100px;
+}
+.subtotal{
+    width: 356px;
+    height: 733px;
+}

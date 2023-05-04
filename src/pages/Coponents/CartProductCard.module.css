@@ -1,0 +1,79 @@
+.productContainer{
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0px;
+    padding-bottom: 16px;
+    border-bottom: 0.08px solid #dfe2e7;
+    gap: 80px;
+}
+.leftContainer{
+    display: flex;
+    gap:24px;
+    width: 800px;
+}
+
+.imageDiv{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+.leftContainer img{
+    width: 160px !important;
+    height: 160px !important;
+    cursor: pointer;
+    padding: 4px;
+}
+.productDetails{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.name {
+    font-size: 16px;
+    color: #373f50;
+    font-weight: 600;
+    align-self: flex-start;
+    transition: 0.5s ease;
+    cursor: pointer;
+    margin-bottom: 8px;
+
+}
+.name:hover {
+    color: #fe696a;
+}
+.sizeDesc{
+    font-size: 14px;
+    color: #4b566B;
+}
+.priceDiv{
+    font-size: 18px;
+    color: #4e54c8;
+    padding-top: 8px;
+}
+.qtyLabel{
+    font-size: 14px;
+    color: #373f50;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+.qtyInput{
+    padding: 10px 16px;
+    width: 120px;
+}
+.removeBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #fe4770;
+    gap: 5px;
+    border: none;
+    padding: 10px 0px;
+}
+.removeBtn:hover{
+    color: #fe4770;
+}
+.removeBtn:active{
+    color: #fe4770 !important;
+}

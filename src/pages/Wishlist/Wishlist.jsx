@@ -1,15 +1,17 @@
+import { useSelector } from "react-redux";
 import { Footer } from "../../shared/Footer/Footer";
 import { Header } from "../../shared/Header/Header";
 import { ProductCard } from "../Coponents/ProductCard";
+import { getWishlist } from "../../store/slices/cartSlices";
 
 export function Wishlist(){
     var i=0;
-    const cartItems = localStorage.getItem('whishlistItems')
-    console.log(cartItems)
-    if (cartItems) {
-        var arrayOfItems = JSON.parse(cartItems)
-        console.log(arrayOfItems[0].product.title)
+    const wishlistItems = localStorage.getItem('whishlistItems')
+    var arrayOfItems = false
+    if (wishlistItems) {
+        arrayOfItems = JSON.parse(wishlistItems)
     }
+    const wishlist = useSelector(getWishlist)
     return (
         <div>
         <Header></Header>
@@ -22,7 +24,7 @@ export function Wishlist(){
                         return (<ProductCard sizeName={i} item={product.product}></ProductCard>)
 
                     })}
-                    {!arrayOfItems && <h3>No product in your wishlist, Please add.</h3>}
+                    {!arrayOfItems.length && <h3>No products in your wishlist, Please add.</h3>}
                 </div>
             </div>
             <Footer></Footer>
