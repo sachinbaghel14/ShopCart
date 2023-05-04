@@ -3,7 +3,7 @@ import logo from "../../assets/logo.png"
 import { Tooltip } from "react-bootstrap"
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 import { useDispatch, useSelector } from "react-redux"
-import { addFetchProducts, cartQuantity } from "../../store/slices/cartSlices"
+import { addFetchProducts, addItem, cartQuantity } from "../../store/slices/cartSlices"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -18,12 +18,13 @@ export function Header() {
   //get data from local storage
   const cartItemsLength = useSelector(cartQuantity)
   const dispatch = useDispatch();
-  // useEffect(()=>{
-  //   const userDetails = localStorage.getItem('userDetails')
-  //   if(userDetails){
-  //     setLoggedInStatus(true)
-  //   }
-  // },[])
+  useEffect(()=>{
+    const cartItems = localStorage.getItem('cartItems')
+    if(cartItems){
+      var arrayOfItems = JSON.parse(cartItems)
+      dispatch(addItem(arrayOfItems))
+    }
+  },[])
   function handleWishlist() {
     navigate("/wishlist")
   }
