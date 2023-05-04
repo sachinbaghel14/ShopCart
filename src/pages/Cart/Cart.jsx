@@ -5,7 +5,7 @@ import styles from "./Cart.module.css"
 import { CartProductCard } from "../Coponents/CartProductCard"
 import { ProductCard } from "../Coponents/ProductCard";
 import { useSelector } from "react-redux";
-import { cartQuantity } from "../../store/slices/cartSlices";
+import { cartQuantity, getTotal } from "../../store/slices/cartSlices";
 
 
 export function Cart() {
@@ -24,6 +24,8 @@ export function Cart() {
         const decimalStr = num.toString().split('.')[1];
         return Number(decimalStr);
     }
+
+    let total = useSelector(getTotal)
     const cart = useSelector(cartQuantity)
 
     return (
@@ -43,7 +45,7 @@ export function Cart() {
                     <div className={styles.subtotal}>
                         <div>
                             <h2>Subtotal</h2>
-                            <h3>&#8377;{Math.floor(256.35)}.<small>{getDecimalPart(256.35)}</small></h3>
+                            <h3>&#8377;{Math.floor(total)}.<small>{getDecimalPart(total)}</small></h3>
                         </div>
                         <hr></hr>
                         <button className={`btn ${styles.checkoutBtn}`} onClick={()=>(alert("Order Placed!"))}>

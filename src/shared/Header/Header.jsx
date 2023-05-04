@@ -3,7 +3,7 @@ import logo from "../../assets/logo.png"
 import { Tooltip } from "react-bootstrap"
 import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 import { useDispatch, useSelector } from "react-redux"
-import { addFetchProducts, addItem, cartQuantity } from "../../store/slices/cartSlices"
+import { addFetchProducts, addItem, cartQuantity, getTotal } from "../../store/slices/cartSlices"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getUser } from "../../store/slices/cartSlices"
@@ -20,7 +20,9 @@ export function Header() {
   const cartItemsLength = useSelector(cartQuantity)
   const user = useSelector(getUser)
   console.log(user)
+  const total = useSelector(getTotal);
   const dispatch = useDispatch();
+  
   useEffect(()=>{
     const cartItems = localStorage.getItem('cartItems')
     if(cartItems){
@@ -38,7 +40,7 @@ export function Header() {
       }
     })
   }
-
+  
   return (
     <div>
       <nav className={`navbar navbar-light bg-light ${styles.headerTop}`}>
@@ -101,7 +103,7 @@ export function Header() {
             <span className={`badge bg-secondary ${styles.hbdg}`}>{cartItemsLength}</span>
             <div className={styles.cartTitle}>
               <p>My Cart</p>
-              <h6>&#8377;436.00&#9662;</h6>
+              <h6>&#8377;{total}&#9662;</h6>
             </div>
           </div>
 
