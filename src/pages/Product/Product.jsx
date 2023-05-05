@@ -4,12 +4,14 @@ import styles from "./product.module.css"
 import { Header } from "../../shared/Header/Header"
 import { Footer } from "../../shared/Footer/Footer"
 import { Rating } from "../Coponents/Rating"
-import { useDispatch } from "react-redux";
-import { addItem } from "../../store/slices/cartSlices";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, addWishlistItem, getWishlist } from "../../store/slices/cartSlices";
+import { useEffect, useState } from "react"
 
 export function Product() {
     const location = useLocation()
     const dispatchEvent = useDispatch()
+    const [inWishlist, setInWishlist] = useState(false)
     function getDecimalPart(num) {
         if (Number.isInteger(num)) {
             return '00';
@@ -18,6 +20,21 @@ export function Product() {
         const decimalStr = num.toString().split('.')[1];
         return Number(decimalStr);
     }
+    const getWishlistinfo = useSelector(getWishlist)
+
+    useEffect(() => {
+        const whishlistItems = localStorage.getItem('whishlistItems')
+        if (whishlistItems) {
+            var arrayOfWishlist = JSON.parse(whishlistItems)
+            const itemAreadyExistsIndex = arrayOfWishlist.findIndex(
+                (i) => i.product.id == location.state.id,)
+                if (itemAreadyExistsIndex != -1) {
+                    setInWishlist(true);
+                } else {
+                    setInWishlist(false);
+                }
+        }
+    }, [getWishlistinfo])
     function handleAddToCartClick() {
 
         // if cart already exists
@@ -47,6 +64,32 @@ export function Product() {
         // notifyAboutCartChanges(arrayOfItems.length)
 
     }
+    function handleWishlist(){
+        const whishlistItems = localStorage.getItem('whishlistItems')
+        if (!whishlistItems) {
+            var arrayOfWishlist = []
+        } else {
+            var arrayOfWishlist = JSON.parse(whishlistItems)
+        }
+        // add the product to wishlist.
+        const whishlistItem = {
+            product: location.state,
+        }
+        const itemAreadyExistsIndex = arrayOfWishlist.findIndex(
+            (i) => i.product.id == location.state.id,
+        )
+        // if product already added to wishlist
+        // if product exists (index!=-1)
+        if (itemAreadyExistsIndex != -1) {
+            arrayOfWishlist.splice(itemAreadyExistsIndex,1)
+            setInWishlist(false);
+        } else {
+            setInWishlist(true);
+            arrayOfWishlist.push(whishlistItem)
+        }
+        localStorage.setItem('whishlistItems', JSON.stringify(arrayOfWishlist))
+        dispatchEvent(addWishlistItem(arrayOfWishlist));
+    }
 
 
     return (
@@ -66,6 +109,16 @@ export function Product() {
                             <label className={styles.thumblistLabel} htmlFor="s4"><img className="" src={location.state.image} alt="fourth slide" /></label>
                         </div>
                         <div className={styles.productImg}>
+                            <div onClick={handleWishlist} className={styles.wishlistDiv}>
+
+                                {!inWishlist && <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+                                </svg>}
+                                {inWishlist && <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class={`bi bi-heart-fill ${styles.wishlistFill}`} viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" />
+                                </svg>}
+
+                            </div>
                             <img className="" src={location.state.image} alt="Product Image" />
                         </div>
                     </div>

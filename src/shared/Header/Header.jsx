@@ -145,7 +145,7 @@ export function Header() {
             title: "Women's clothing",
             url: "https://fakestoreapi.com/products/category/women's clothing",
           }
-        }));dispatch(addFetchProducts(4))}} className={styles.category}>Women's clothing</a>
+        }));dispatch(addFetchProducts(4))}} className={styles.category}>Women's Clothing</a>
       </nav>
     </div>
   )

@@ -43,10 +43,35 @@
     border: 1px solid #fe696a;
     opacity: 1;
 }
+.productImg{
+    display: flex;
+    flex-direction: column;
+}
 .productImg img{
     width: 650px;
     height:650px;
     padding: 30px;
+}
+.wishlistDiv {
+    padding: 15px;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
+    background-color: #F3F5F9;
+    cursor: pointer;
+    margin-top: 6px;
+}
+.wishlistFill{
+    color: #fe696a !important;
+}
+
+.wishlistDiv:hover {
+    color: #fe696a;
+}
+.wishlistDiv svg:focus{
+    background-color: red !important;
 }
 .productDetails {
     display: flex;
