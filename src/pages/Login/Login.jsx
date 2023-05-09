@@ -5,16 +5,38 @@ import { Footer } from "../../shared/Footer/Footer"
 import { useNavigate } from "react-router-dom"
 import { addUser } from "../../store/slices/cartSlices"
 import { useDispatch } from "react-redux"
+import { useFormik } from "formik"
+import { Form } from "react-bootstrap"
+import * as Yup from "yup"
+
+const LoginSchema = Yup.object().shape({
+    email: Yup.string()
+        .email('email type invalid')
+        .required('Email is required'),
+
+    password: Yup.string()
+        .required('Password is required')
+        .min(6, 'Password cannot be less than 6 characters')
+        .max(15, 'Password is too long!'),
+
+})
 
 export function Login() {
     const [user, setUser] = useState({ email: "", password: "" })
     const navigate = useNavigate();
     const dispatch = useDispatch()
-    function handleLogin() {
-        console.log(user)
+
+    const formik = useFormik({
+        initialValues: user,
+        onSubmit: handleLogin,
+        validationSchema: LoginSchema,
+
+    });
+
+    function handleLogin(values) {
         fetch('https://fakestoreapi.com/auth/login', {
             method: "POST",
-            body: JSON.stringify(user),
+            body: JSON.stringify(values),
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -23,13 +45,13 @@ export function Login() {
                 console.log(response.json())
                 console.log("user is logged in")
                 const userDetails = localStorage.getItem('userDetails')
-                if (user) {
+                if (userDetails) {
                     var arrayOfItems = JSON.parse(userDetails)
                     const itemAreadyExistsIndex = arrayOfItems.findIndex(
-                        (i) => i.email === user.email,
+                        (i) => i.email === values.email,
                     )
                     if (itemAreadyExistsIndex !== -1) {
-                        if (arrayOfItems[itemAreadyExistsIndex].password === user.password) {
+                        if (arrayOfItems[itemAreadyExistsIndex].password === values.password) {
                             arrayOfItems[itemAreadyExistsIndex].loggedin = true
                             localStorage.setItem('userDetails', JSON.stringify(arrayOfItems));
                             console.log("user found")
@@ -43,7 +65,7 @@ export function Login() {
                     }
 
                 }
-                
+
             })
             .catch((err) => {
                 console.log(err)
@@ -67,44 +89,49 @@ export function Login() {
 
                     </div>
                     <hr></hr>
-                    <form className="loginform">
-                        <div className="mb-3">
-                            <label for="email" className={styles.formLabel}>
+                    <Form noValidate className="loginform" onSubmit={formik.handleSubmit}>
+                        <Form.Group className="mb-3" controlId="validationCustomUsername">
+                            <Form.Label className={styles.formLabel}>
                                 Email address
-                            </label>
-                            <input
-                                value={user.email}
+                            </Form.Label>
+                            <Form.Control
+                                 value={formik.values.email}
                                 type="email"
+                                name="password"
                                 className={`form-control ${styles.formInput}`}
-                                id="email"
-                                placeholder="Your email"
-                                onInput={(event) => {
-                                    setUser({ ...user, email: event.target.value })
-                                }}>
-                            </input>
-                        </div>
-                        <div className="mb-3">
-                            <label for="password" className={styles.formLabel}>
-                                Password
-                            </label>
-                            <input
-                                type="password" onInput={(event) => {
-                                    setUser({ ...user, password: event.target.value })
-                                }}
-                                value={user.password}
-                                className={`form-control ${styles.formInput}`}
-                                id="password"
                                 placeholder="Your password"
-                            ></input>
-                        </div>
+                                onChange={formik.handleChange}
+                                isValid={formik.touched.email && !formik.errors.email}
+                                isInvalid={!!formik.errors.email}
+                            />
+                            <Form.Control.Feedback type="invalid">{formik.errors.email}</Form.Control.Feedback>
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="validationCustomPassword">
+                            <Form.Label className={styles.formLabel}>
+                                Password
+                            </Form.Label>
+                            <Form.Control
+                                value={formik.values.password}
+                                type="password"
+                                name="password"
+                                className={`form-control ${styles.formInput}`}
+                                placeholder="Your password"
+                                onChange={formik.handleChange}
+                                isValid={formik.touched.password && !formik.errors.password}
+                                isInvalid={!!formik.errors.password}
+                            />
+                            <Form.Control.Feedback type="invalid">{formik.errors.password}</Form.Control.Feedback>
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
                         <div class="mb-3 d-flex flex-wrap justify-content-between">
                             <div class="form-check mb-2">
                                 <input class={`form-check-input ${styles.rememberCheck}`} type="checkbox" id="si-remember"></input>
                                 <label class="form-check-label" for="si-remember">Remember me</label>
                             </div><a class={`fs-sm ${styles.forget}`} href="#">Forgot password?</a>
                         </div>
-                        <button onClick={handleLogin} type="button" className={`btn ${styles.loginBtn}`}>Signin</button>
-                    </form>
+                        <button type="submit" className={`btn ${styles.loginBtn}`}>Signin</button>
+                    </Form>
                     <h6>New to ShopCart?</h6>
                     <button type="button" className={`btn ${styles.signupBtn}`} onClick={() => (navigate("/signup"))}>Create your ShopCart account</button>
                 </div>

@@ -12,6 +12,7 @@ export function Wishlist(){
         arrayOfItems = JSON.parse(wishlistItems)
     }
     const wishlist = useSelector(getWishlist)
+    
     return (
         <div>
         <Header></Header>

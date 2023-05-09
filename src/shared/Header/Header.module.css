@@ -59,6 +59,18 @@
     color: #4b566b;
     cursor: pointer;
 }
+.wishlistbdg{
+    position:absolute;
+    top:17px;
+    margin-left: 16px;
+    border-radius: 100%;
+    background-color: #fe696a!important;
+    height: 20px;
+    width: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .login, .cart {
     display: flex;

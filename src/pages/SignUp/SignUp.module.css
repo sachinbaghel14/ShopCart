@@ -28,6 +28,10 @@
     margin: 0;
     font-weight: 600;
 }
+.name{
+    display: flex;
+    gap: 20px;
+}
 .formLabel{
     font-weight: 600;
     margin-bottom: 5px;

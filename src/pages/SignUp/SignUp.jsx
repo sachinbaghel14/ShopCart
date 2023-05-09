@@ -3,15 +3,51 @@ import styles from "./SignUp.module.css"
 import { Header } from "../../shared/Header/Header"
 import { Footer } from "../../shared/Footer/Footer"
 import { useNavigate } from "react-router-dom"
+import { Form } from "react-bootstrap"
+import { useFormik } from "formik";
+import * as Yup from "yup"
 
 
+const SignupSchema = Yup.object().shape({
+    firstname: Yup.string()
+        .required('First name is required')
+        .min(3, 'First name cannot be less than 3 characters')
+        .max(15, 'First name is too long!'),
 
+    lastname: Yup.string()
+        .required('Last name is required')
+        .min(3, 'Last name cannot be less than 3 characters')
+        .max(15, 'Last name is too long!'),
+
+    email: Yup.string()
+        .email('email type invalid')
+        .required('Email is required'),
+
+    password: Yup.string()
+        .required('Password is required')
+        .min(6, 'Password cannot be less than 6 characters')
+        .max(15, 'Password is too long!'),
+
+    confirmpassword: Yup.string()
+        .required('Confirm password is required')
+        .oneOf([Yup.ref('password'), null], 'Passwords must match')
+
+})
 export function SignUp() {
 
-    const [user, setUser] = useState({email: "", name: "", password: "",confirmPassword:"" })
+    const [user, setUser] = useState({ email: "", firstname: "", lastname: "", password: "", confirmpassword: "" })
     const navigate = useNavigate();
+    // console.log(user)
 
-    function handleSignUp() {
+    const formik = useFormik({
+        initialValues: user,
+        onSubmit: handleSignUp,
+        validationSchema: SignupSchema,
+
+    });
+
+
+    function handleSignUp(values) {
         fetch('https://fakestoreapi.com/users', {
             method: "POST",
             body: JSON.stringify(user),
@@ -22,13 +58,14 @@ export function SignUp() {
             .then((response) => {
                 console.log(response.json())
                 alert("Signup Successful, Please Signin")
-                localStorage.setItem('userDetails',JSON.stringify([{name:user.name, email:user.email, password:user.password, loggedin:false}]));
+                localStorage.setItem('userDetails', JSON.stringify([values]));
                 navigate("/login");
             })
             .catch((err) => {
                 console.log(err)
             })
     }
+
     return (
         <div>
             <Header></Header>
@@ -45,67 +82,100 @@ export function SignUp() {
 
                     </div>
                     <hr></hr>
-                    <form className="loginform">
-                        <div className="mb-3">
-                            <label for="name" className={styles.formLabel}>
-                                Full Name
-                            </label>
-                            <input
-                                type="text"
-                                value={user.name}
-                                className={`form-control ${styles.formInput}`}
-                                id="name"
-                                placeholder="Full Name"
-                                onInput={(event) => {
-                                    setUser({ ...user, name: event.target.value })
-                                }}>
-                            </input>
+                    <Form noValidate className="loginform" onSubmit={formik.handleSubmit}>
+                        <div className={`mb-3 ${styles.name}`}>
+                            <Form.Group controlId="validationFormik01">
+                                <Form.Label className={`${styles.formLabel}`}>
+                                    First Name
+                                </Form.Label>
+                                <Form.Control
+                                    name="firstname"
+                                    type="text"
+                                    value={formik.values.firstname}
+                                    className={`form-control ${styles.formInput}`}
+                                    placeholder="First name"
+                                    onChange={formik.handleChange}
+                                    isValid={formik.touched.firstname && !formik.errors.firstname}
+                                    isInvalid={!!formik.errors.firstname}
+                                />
+                                <Form.Control.Feedback type="invalid">{formik.errors.firstname}</Form.Control.Feedback>
+                                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group controlId="validationFormik02">
+                                <Form.Label className={`${styles.formLabel}`}>
+                                    Last Name
+                                </Form.Label>
+                                <Form.Control
+                                    name="lastname"
+                                    type="text"
+                                    value={formik.values.lastname}
+                                    onChange={formik.handleChange}
+                                    className={`form-control ${styles.formInput}`}
+                                    placeholder="Your password"
+                                    isValid={formik.touched.lastname && !formik.errors.lastname}
+                                    isInvalid={!!formik.errors.lastname}
+                                />
+                                <Form.Control.Feedback type="invalid">{formik.errors.lastname}</Form.Control.Feedback>
+                                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                            </Form.Group>
                         </div>
-                        <div className="mb-3">
-                            <label for="email" className={styles.formLabel}>
+                        <Form.Group className="mb-3" controlId="validationCustomUsername">
+                            <Form.Label className={styles.formLabel}>
                                 Email address
-                            </label>
-                            <input
-                                value={user.email}
+                            </Form.Label>
+                            <Form.Control
+                                name="email"
                                 type="email"
+                                value={formik.values.email}
+                                onChange={formik.handleChange}
                                 className={`form-control ${styles.formInput}`}
-                                id="email"
                                 placeholder="Your email"
-                                onInput={(event) => {
-                                    setUser({ ...user, email: event.target.value })
-                                }}>
-                            </input>
-                        </div>
-                        <div className="mb-3">
-                            <label for="password" className={styles.formLabel}>
+                                isValid={formik.touched.email && !formik.errors.email}
+                                isInvalid={!!formik.errors.email}
+                            />
+                            <Form.Control.Feedback type="invalid">{formik.errors.email}</Form.Control.Feedback>
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label className={styles.formLabel}>
                                 Password
-                            </label>
-                            <input
-                                type="password" onInput={(event) => {
-                                    setUser({ ...user, password: event.target.value })
-                                }}
-                                value={user.password}
+                            </Form.Label>
+                            <Form.Control
+                                name="password"
+                                type="password"
+                                value={formik.values.password}
+                                onChange={formik.handleChange}
                                 className={`form-control ${styles.formInput}`}
-                                id="password"
                                 placeholder="Your password"
-                            ></input>
-                        </div>
-                        <div className="mb-3">
-                            <label for="confirmPassword" className={styles.formLabel}>
+                                isValid={formik.touched.password && !formik.errors.password}
+                                isInvalid={!!formik.errors.password}
+                            />
+                            <Form.Control.Feedback type="invalid">{formik.errors.password}</Form.Control.Feedback>
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label className={styles.formLabel}>
                                 Confirm password
-                            </label>
-                            <input
-                                type="password" onInput={(event) => {
-                                    setUser({ ...user, confirmPassword: event.target.value })
-                                }}
-                                value={user.confirmPassword}
+                            </Form.Label>
+                            <Form.Control
+                                name="confirmpassword"
+                                type="password"
+                                // onInput={(event) => {
+                                //     setUser({ ...user, confirmpassword: event.target.value })
+                                // }}
+                                value={formik.values.confirmpassword}
+                                onChange={formik.handleChange}
                                 className={`form-control ${styles.formInput}`}
-                                id="confirmPassword"
+                                id="confirmpassword"
                                 placeholder="Confirm Your password"
-                            ></input>
-                        </div>
-                        <button onClick={handleSignUp} type="button" className={`btn ${styles.loginBtn}`}>Sign up</button>
-                    </form>
+                                isValid={formik.touched.confirmpassword && !formik.errors.confirmpassword}
+                                isInvalid={!!formik.errors.confirmpassword}
+                            />
+                            <Form.Control.Feedback type="invalid">{formik.errors.confirmpassword}</Form.Control.Feedback>
+                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                        </Form.Group>
+                        <button type="submit" className={`btn ${styles.loginBtn}`}>Sign up</button>
+                    </Form>
                     <h6>Already have an account?</h6>
                     <button type="button" className={`btn ${styles.signupBtn}`} onClick={() => (navigate("/login"))}>Sign in</button>
                 </div>
@@ -114,4 +184,4 @@ export function SignUp() {
             <Footer></Footer>
         </div>
     )
-}
+} 
