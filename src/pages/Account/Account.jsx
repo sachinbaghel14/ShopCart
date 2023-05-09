@@ -5,6 +5,35 @@ import profileImg from "../../assets/profile.jpg"
 import { useDispatch, useSelector } from "react-redux"
 import { addUser, cartQuantity, getUser, getWishlist } from "../../store/slices/cartSlices"
 import { useNavigate } from "react-router-dom"
+import { Form } from "react-bootstrap"
+import { useFormik } from "formik";
+import * as Yup from "yup"
+
+const accountSchema = Yup.object().shape({
+    firstname: Yup.string()
+        .required('First name is required')
+        .min(3, 'First name cannot be less than 3 characters')
+        .max(15, 'First name is too long!'),
+
+    lastname: Yup.string()
+        .required('Last name is required')
+        .min(3, 'Last name cannot be less than 3 characters')
+        .max(15, 'Last name is too long!'),
+
+    email: Yup.string()
+        .email('email type invalid')
+        .required('Email is required'),
+
+    password: Yup.string()
+        .required('Password is required')
+        .min(6, 'Password cannot be less than 6 characters')
+        .max(15, 'Password is too long!'),
+
+    confirmpassword: Yup.string()
+        .required('Confirm password is required')
+        .oneOf([Yup.ref('password'), null], 'Passwords must match')
+
+})
 
 export function Account() {
     const dispatch = useDispatch()
@@ -13,10 +42,21 @@ export function Account() {
     const wishlistLength = useSelector(getWishlist)
     const navigate = useNavigate()
 
-    function handleSignout(){
+    function handleSignout() {
         dispatch(addUser({}))
         navigate("/")
     }
+
+    function handleUpdate() {
+
+    }
+
+    const formik = useFormik({
+        initialValues: user,
+        onSubmit: handleUpdate,
+        validationSchema: accountSchema,
+
+    });
 
     return (
         <div>
@@ -67,7 +107,7 @@ export function Account() {
                             <span>{wishlistLength}</span>
                         </div>
 
-                        <div className={styles.DashItem} onClick={() => (navigate("/cart"))}>
+                        <div className={`${styles.DashItem} ${styles.lastDashItem}`} onClick={() => (navigate("/cart"))}>
                             <div className={styles.dashItemTitle}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
                                     <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
@@ -77,8 +117,123 @@ export function Account() {
                             <span>0</span>
                         </div>
                     </div>
-                    <div className={styles.leftDiv}>
+                    <div className={styles.rightDiv}>
+                        <Form noValidate className="loginform" onSubmit={formik.handleSubmit}>
+                            <div className={`mb-3 ${styles.formContainer}`}>
+                                <Form.Group controlId="validationFormik01">
+                                    <Form.Label className={`${styles.formLabel}`}>
+                                        First Name
+                                    </Form.Label>
+                                    <Form.Control
+                                        name="firstname"
+                                        type="text"
+                                        value={formik.values.firstname}
+                                        className={`form-control ${styles.formInput}`}
+                                        placeholder="First name"
+                                        onChange={formik.handleChange}
+                                        isValid={formik.touched.firstname && !formik.errors.firstname}
+                                        isInvalid={!!formik.errors.firstname}
+                                    />
+                                    <Form.Control.Feedback type="invalid">{formik.errors.firstname}</Form.Control.Feedback>
+                                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                </Form.Group>
+                                <Form.Group controlId="validationFormik02">
+                                    <Form.Label className={`${styles.formLabel}`}>
+                                        Last Name
+                                    </Form.Label>
+                                    <Form.Control
+                                        name="lastname"
+                                        type="text"
+                                        value={formik.values.lastname}
+                                        onChange={formik.handleChange}
+                                        className={`form-control ${styles.formInput}`}
+                                        placeholder="Last name"
+                                        isValid={formik.touched.lastname && !formik.errors.lastname}
+                                        isInvalid={!!formik.errors.lastname}
+                                    />
+                                    <Form.Control.Feedback type="invalid">{formik.errors.lastname}</Form.Control.Feedback>
+                                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                </Form.Group>
+                            </div>
 
+                            <div className={`mb-3 ${styles.formContainer}`}>
+                                <Form.Group className="mb-3" controlId="validationCustomUsername">
+                                    <Form.Label className={styles.formLabel}>
+                                        Email Address
+                                    </Form.Label>
+                                    <Form.Control
+                                        name="email"
+                                        type="email"
+                                        value={formik.values.email}
+                                        onChange={formik.handleChange}
+                                        className={`form-control ${styles.formInput}`}
+                                        placeholder="Your email"
+                                        isValid={formik.touched.email && !formik.errors.email}
+                                        isInvalid={!!formik.errors.email}
+                                    />
+                                    <Form.Control.Feedback type="invalid">{formik.errors.email}</Form.Control.Feedback>
+                                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                </Form.Group>
+                                <Form.Group className="mb-3" controlId="validationCustomUsername">
+                                    <Form.Label className={styles.formLabel}>
+                                        Phone Number
+                                    </Form.Label>
+                                    <Form.Control
+                                        name="number"
+                                        type="tel"
+                                        value={formik.values.number}
+                                        onChange={formik.handleChange}
+                                        className={`form-control ${styles.formInput}`}
+                                        placeholder="Your phone number"
+                                        isValid={formik.touched.number && !formik.errors.number}
+                                        isInvalid={!!formik.errors.number}
+                                    />
+                                    <Form.Control.Feedback type="invalid">{formik.errors.number}</Form.Control.Feedback>
+                                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                </Form.Group>
+                            </div>
+                            <div className={`mb-3 ${styles.formContainer}`}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label className={styles.formLabel}>
+                                        Password
+                                    </Form.Label>
+                                    <Form.Control
+                                        name="password"
+                                        type="password"
+                                        value={formik.values.password}
+                                        onChange={formik.handleChange}
+                                        className={`form-control ${styles.formInput}`}
+                                        placeholder="Your password"
+                                        isValid={formik.touched.password && !formik.errors.password}
+                                        isInvalid={!!formik.errors.password}
+                                    />
+                                    <Form.Control.Feedback type="invalid">{formik.errors.password}</Form.Control.Feedback>
+                                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label className={styles.formLabel}>
+                                        Confirm Password
+                                    </Form.Label>
+                                    <Form.Control
+                                        name="confirmpassword"
+                                        type="password"
+                                        // onInput={(event) => {
+                                        //     setUser({ ...user, confirmpassword: event.target.value })
+                                        // }}
+                                        value={formik.values.confirmpassword}
+                                        onChange={formik.handleChange}
+                                        className={`form-control ${styles.formInput}`}
+                                        id="confirmpassword"
+                                        placeholder="Confirm Your password"
+                                        isValid={formik.touched.confirmpassword && !formik.errors.confirmpassword}
+                                        isInvalid={!!formik.errors.confirmpassword}
+                                    />
+                                    <Form.Control.Feedback type="invalid">{formik.errors.confirmpassword}</Form.Control.Feedback>
+                                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                </Form.Group>
+                            </div>
+                            <button type="submit" className={`btn ${styles.signout}`}>Update profile</button>
+                        </Form>
                     </div>
                 </div>
             </div>

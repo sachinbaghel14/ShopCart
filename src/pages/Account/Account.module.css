@@ -37,12 +37,14 @@
 }
 
 .container{
-    display: flex
+    display: flex;
+    padding: 0px 80px;
 }
 .leftDiv{
     margin: 40px;
     border-color: #f0f0f0;
     box-shadow: 0 0 70px 10px #F0f0f0;
+    border-radius: 20px;
 }
 .profile{
     display: flex;
@@ -62,6 +64,7 @@
     font-weight: 600;
     font-size: 16px;
     color: #373f50;
+    margin: 0;
 }
 .imgTitle span{
     font-size: 14px;
@@ -87,6 +90,9 @@
     transition: 0.5s ease;
     color: #4b566b !important;
 }
+.lastDashItem{
+    border: none ;
+}
 .DashItem:hover{
     color: #fe696a !important;
 }
@@ -106,4 +112,25 @@
 
 .dashItemTitle p{
     margin: 0;
+}
+
+.rightDiv{
+    padding:40px
+}
+
+.formContainer{
+    display: flex;
+    gap: 24px;
+}
+.formLabel{
+    font-size: 14px;
+    color: #373F50;
+    font-weight: 600;
+}
+.formInput{
+ width: 393px;
+ height: 44px;
+ padding: 10px 16px;
+ font-size: 15px;
+ color: #4b566b;
 }
