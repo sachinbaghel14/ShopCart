@@ -22,6 +22,7 @@ export function Header() {
   const wishlistLength = useSelector(getWishlist)
   // console.log(user)
   const total = useSelector(getTotal);
+  console.log(total)
   const dispatch = useDispatch();
   
   useEffect(()=>{
