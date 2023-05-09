@@ -47,10 +47,28 @@ export function Account() {
         navigate("/")
     }
 
-    function handleUpdate() {
-
+    function handleUpdate(values) {
+        const userDetails = localStorage.getItem('userDetails')
+        if (userDetails) {
+            var arrayOfItems = JSON.parse(userDetails)
+            const itemExistsIndex = arrayOfItems.findIndex(
+                (i) => i.email === values.email,
+            )
+            if (itemExistsIndex !== -1) {
+                arrayOfItems[itemExistsIndex].firstname = values.firstname
+                arrayOfItems[itemExistsIndex].lastname = values.lastname
+                arrayOfItems[itemExistsIndex].email = values.email
+                arrayOfItems[itemExistsIndex].number = values.number
+                arrayOfItems[itemExistsIndex].password = values.password
+                arrayOfItems[itemExistsIndex].confirmpassword = values.confirmpassword
+                arrayOfItems[itemExistsIndex].loggedin = true
+                localStorage.setItem('userDetails', JSON.stringify(arrayOfItems));
+                console.log("user found")
+                dispatch(addUser(arrayOfItems[itemExistsIndex]))
+                alert("Profile update successful!")
+            }
+        }
     }
-
     const formik = useFormik({
         initialValues: user,
         onSubmit: handleUpdate,
