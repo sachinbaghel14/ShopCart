@@ -95,11 +95,11 @@ export function Login() {
                                 Email address
                             </Form.Label>
                             <Form.Control
-                                 value={formik.values.email}
+                                value={formik.values.email}
                                 type="email"
-                                name="password"
+                                name="email"
                                 className={`form-control ${styles.formInput}`}
-                                placeholder="Your password"
+                                placeholder="Your email"
                                 onChange={formik.handleChange}
                                 isValid={formik.touched.email && !formik.errors.email}
                                 isInvalid={!!formik.errors.email}

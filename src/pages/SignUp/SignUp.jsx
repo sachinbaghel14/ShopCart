@@ -111,7 +111,7 @@ export function SignUp() {
                                     value={formik.values.lastname}
                                     onChange={formik.handleChange}
                                     className={`form-control ${styles.formInput}`}
-                                    placeholder="Your password"
+                                    placeholder="Last name"
                                     isValid={formik.touched.lastname && !formik.errors.lastname}
                                     isInvalid={!!formik.errors.lastname}
                                 />
