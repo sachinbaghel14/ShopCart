@@ -64,6 +64,8 @@ export function Login() {
                         alert("invalid email or password")
                     }
 
+                }else{
+                    alert("invalid email or password")
                 }
 
             })
