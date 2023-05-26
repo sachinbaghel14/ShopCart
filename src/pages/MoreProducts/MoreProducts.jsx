@@ -5,6 +5,7 @@ import { Footer } from "../../shared/Footer/Footer";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getfetch } from "../../store/slices/cartSlices";
+import { HashLoader } from "react-spinners";
 
 export function MoreProducts() {
     const location = useLocation()
@@ -13,6 +14,7 @@ export function MoreProducts() {
     var i = 0
     const [moreProducts, setMoreProducts] = useState([])
     useEffect(() => {
+        setMoreProducts([])
         fetch(location.state.url)
             .then((res) => res.json())
             .then((jsonResponse) => {
@@ -24,16 +26,21 @@ export function MoreProducts() {
     }, [getFetchProduct])
     return (
         <div>
-        <Header></Header>
+            <Header></Header>
             <div className="home-body">
                 <h2 className="home-title">{location.state.title}</h2>
 
                 <div className="product-container">
-                    {moreProducts && moreProducts.map((product) => {
+                    {moreProducts.length > 0 ? (moreProducts.map((product) => {
                         i = i + 1;
                         return (<ProductCard sizeName={i} item={product}></ProductCard>)
 
-                    })}
+                    })) : (
+                        <div className="LoadingSpinner">
+                                <HashLoader color="#fe696a"></HashLoader>
+                                <p>Loading, Please wait...</p>
+                        </div>
+                    )}
                 </div>
             </div>
             <Footer></Footer>
