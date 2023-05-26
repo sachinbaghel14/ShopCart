@@ -5,7 +5,7 @@ import { Footer } from "../../shared/Footer/Footer";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getfetch } from "../../store/slices/cartSlices";
-import { HashLoader } from "react-spinners";
+import { LoadingSpinner } from "../Coponents/LoadingSpinner";
 
 export function MoreProducts() {
     const location = useLocation()
@@ -36,10 +36,7 @@ export function MoreProducts() {
                         return (<ProductCard sizeName={i} item={product}></ProductCard>)
 
                     })) : (
-                        <div className="LoadingSpinner">
-                                <HashLoader color="#fe696a"></HashLoader>
-                                <p>Loading, Please wait...</p>
-                        </div>
+                        <LoadingSpinner></LoadingSpinner>
                     )}
                 </div>
             </div>
