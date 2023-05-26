@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux"
 import { useFormik } from "formik"
 import { Form } from "react-bootstrap"
 import * as Yup from "yup"
+import { LoadingSpinner } from "../Coponents/LoadingSpinner"
 
 const LoginSchema = Yup.object().shape({
     email: Yup.string()
@@ -23,6 +24,7 @@ const LoginSchema = Yup.object().shape({
 
 export function Login() {
     const [user, setUser] = useState({ email: "", password: "" })
+    const [showSpinner, setShowSpinner] = useState(false)
     const navigate = useNavigate();
     const dispatch = useDispatch()
 
@@ -34,6 +36,7 @@ export function Login() {
     });
 
     function handleLogin(values) {
+        setShowSpinner(true)
         fetch('https://fakestoreapi.com/auth/login', {
             method: "POST",
             body: JSON.stringify(values),
@@ -64,10 +67,10 @@ export function Login() {
                         alert("invalid email or password")
                     }
 
-                }else{
+                } else {
                     alert("invalid email or password")
                 }
-
+                setShowSpinner(false)
             })
             .catch((err) => {
                 console.log(err)
@@ -78,67 +81,70 @@ export function Login() {
 
         <div>
             <Header></Header>
-            <div className={styles.container}>
-                {/* 1 row is divided in 12 columns. */}
-                <div className={styles.loginContainer}>
-                    <div className={styles.loginTitle}>
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="33.6" height="33.6" fill="currentColor" class="bi bi-unlock" viewBox="0 0 16 16">
-                                <path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2zM3 8a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H3z" />
-                            </svg>
-                        </div>
-                        <div className={styles.loginTitleH3}><h3>Sign in</h3></div>
+            {showSpinner && <div className={styles.loadingSpinner}><LoadingSpinner title = "Signing in, Please wait..."></LoadingSpinner></div>}
+            {!showSpinner &&
+                <div className={styles.container}>
+                    {/* 1 row is divided in 12 columns. */}
+                    <div className={styles.loginContainer}>
+                        <div className={styles.loginTitle}>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="33.6" height="33.6" fill="currentColor" class="bi bi-unlock" viewBox="0 0 16 16">
+                                    <path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2zM3 8a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H3z" />
+                                </svg>
+                            </div>
+                            <div className={styles.loginTitleH3}><h3>Sign in</h3></div>
 
+                        </div>
+                        <hr></hr>
+                        <Form noValidate className="loginform" onSubmit={formik.handleSubmit}>
+                            <Form.Group className="mb-3" controlId="validationCustomUsername">
+                                <Form.Label className={styles.formLabel}>
+                                    Email address
+                                </Form.Label>
+                                <Form.Control
+                                    value={formik.values.email}
+                                    type="email"
+                                    name="email"
+                                    className={`form-control ${styles.formInput}`}
+                                    placeholder="Your email"
+                                    onChange={formik.handleChange}
+                                    isValid={formik.touched.email && !formik.errors.email}
+                                    isInvalid={!!formik.errors.email}
+                                />
+                                <Form.Control.Feedback type="invalid">{formik.errors.email}</Form.Control.Feedback>
+                                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="validationCustomPassword">
+                                <Form.Label className={styles.formLabel}>
+                                    Password
+                                </Form.Label>
+                                <Form.Control
+                                    value={formik.values.password}
+                                    type="password"
+                                    name="password"
+                                    className={`form-control ${styles.formInput}`}
+                                    placeholder="Your password"
+                                    onChange={formik.handleChange}
+                                    isValid={formik.touched.password && !formik.errors.password}
+                                    isInvalid={!!formik.errors.password}
+                                />
+                                <Form.Control.Feedback type="invalid">{formik.errors.password}</Form.Control.Feedback>
+                                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                            </Form.Group>
+                            <div class="mb-3 d-flex flex-wrap justify-content-between">
+                                <div class="form-check mb-2">
+                                    <input class={`form-check-input ${styles.rememberCheck}`} type="checkbox" id="si-remember"></input>
+                                    <label class="form-check-label" for="si-remember">Remember me</label>
+                                </div><a class={`fs-sm ${styles.forget}`} href="#">Forgot password?</a>
+                            </div>
+                            <button type="submit" className={`btn ${styles.loginBtn}`}>Signin</button>
+                        </Form>
+                        <h6>New to ShopCart?</h6>
+                        <button type="button" className={`btn ${styles.signupBtn}`} onClick={() => (navigate("/signup"))}>Create your ShopCart account</button>
                     </div>
-                    <hr></hr>
-                    <Form noValidate className="loginform" onSubmit={formik.handleSubmit}>
-                        <Form.Group className="mb-3" controlId="validationCustomUsername">
-                            <Form.Label className={styles.formLabel}>
-                                Email address
-                            </Form.Label>
-                            <Form.Control
-                                value={formik.values.email}
-                                type="email"
-                                name="email"
-                                className={`form-control ${styles.formInput}`}
-                                placeholder="Your email"
-                                onChange={formik.handleChange}
-                                isValid={formik.touched.email && !formik.errors.email}
-                                isInvalid={!!formik.errors.email}
-                            />
-                            <Form.Control.Feedback type="invalid">{formik.errors.email}</Form.Control.Feedback>
-                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="validationCustomPassword">
-                            <Form.Label className={styles.formLabel}>
-                                Password
-                            </Form.Label>
-                            <Form.Control
-                                value={formik.values.password}
-                                type="password"
-                                name="password"
-                                className={`form-control ${styles.formInput}`}
-                                placeholder="Your password"
-                                onChange={formik.handleChange}
-                                isValid={formik.touched.password && !formik.errors.password}
-                                isInvalid={!!formik.errors.password}
-                            />
-                            <Form.Control.Feedback type="invalid">{formik.errors.password}</Form.Control.Feedback>
-                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                        </Form.Group>
-                        <div class="mb-3 d-flex flex-wrap justify-content-between">
-                            <div class="form-check mb-2">
-                                <input class={`form-check-input ${styles.rememberCheck}`} type="checkbox" id="si-remember"></input>
-                                <label class="form-check-label" for="si-remember">Remember me</label>
-                            </div><a class={`fs-sm ${styles.forget}`} href="#">Forgot password?</a>
-                        </div>
-                        <button type="submit" className={`btn ${styles.loginBtn}`}>Signin</button>
-                    </Form>
-                    <h6>New to ShopCart?</h6>
-                    <button type="button" className={`btn ${styles.signupBtn}`} onClick={() => (navigate("/signup"))}>Create your ShopCart account</button>
-                </div>
 
-            </div>
+                </div>
+            }
             <Footer></Footer>
         </div>
 

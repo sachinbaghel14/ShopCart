@@ -36,7 +36,7 @@ export function MoreProducts() {
                         return (<ProductCard sizeName={i} item={product}></ProductCard>)
 
                     })) : (
-                        <LoadingSpinner></LoadingSpinner>
+                        <LoadingSpinner title = "Loading, Please wait..."></LoadingSpinner>
                     )}
                 </div>
             </div>

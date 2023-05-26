@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom"
 import { Form } from "react-bootstrap"
 import { useFormik } from "formik";
 import * as Yup from "yup"
+import { LoadingSpinner } from "../Coponents/LoadingSpinner"
 
 
 const SignupSchema = Yup.object().shape({
@@ -42,6 +43,7 @@ export function SignUp() {
 
     const [user, setUser] = useState({ email: "", firstname: "", lastname: "", number: "", password: "", confirmpassword: "" })
     const navigate = useNavigate();
+    const [showSpinner, setShowSpinner] = useState(false)
     // console.log(user)
 
     const formik = useFormik({
@@ -53,6 +55,7 @@ export function SignUp() {
 
 
     function handleSignUp(values) {
+        setShowSpinner(true)
         fetch('https://fakestoreapi.com/users', {
             method: "POST",
             body: JSON.stringify(user),
@@ -62,11 +65,13 @@ export function SignUp() {
         })
             .then((response) => {
                 console.log(response.json())
-                alert("Signup Successful, Please Signin")
                 localStorage.setItem('userDetails', JSON.stringify([values]));
+                setShowSpinner(false)
+                alert("Signup Successful, Please Signin")
                 navigate("/login");
             })
             .catch((err) => {
+                setShowSpinner(false)
                 console.log(err)
             })
     }
@@ -74,7 +79,8 @@ export function SignUp() {
     return (
         <div>
             <Header></Header>
-            <div className={styles.container}>
+            {showSpinner && <div className={styles.loadingSpinner}><LoadingSpinner title = "Signing up, Please wait..."></LoadingSpinner></div>}
+            {!showSpinner && <div className={styles.container}>
                 {/* 1 row is divided in 12 columns. */}
                 <div className={styles.loginContainer}>
                     <div className={styles.loginTitle}>
@@ -203,6 +209,7 @@ export function SignUp() {
                 </div>
 
             </div>
+            }
             <Footer></Footer>
         </div>
     )

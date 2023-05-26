@@ -7,6 +7,7 @@ import { ProductCard } from "../Coponents/ProductCard";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addFetchProducts } from "../../store/slices/cartSlices";
+import { LoadingSpinner } from "../Coponents/LoadingSpinner";
 
 export function Home() {
     var ratings = Array(Math.floor(24)).fill(0);
@@ -28,6 +29,8 @@ export function Home() {
     return (
         <div>
             <Header></Header>
+            {products.length > 0 ? ( 
+            <div>
             <HomeCarousel></HomeCarousel>
             <div className="home-body">
                 <h2 className="home-title">Trending products</h2>
@@ -49,6 +52,8 @@ export function Home() {
                     })); dispatch(addFetchProducts(0))
                 }} >More products &#62;</button>
             </div>
+            </div>
+            ):(<LoadingSpinner title="Loading, Please wait..."></LoadingSpinner>)}
             <Footer></Footer>
         </div>
 

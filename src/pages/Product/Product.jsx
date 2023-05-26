@@ -7,11 +7,13 @@ import { Rating } from "../Coponents/Rating"
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, addWishlistItem, getWishlist } from "../../store/slices/cartSlices";
 import { useEffect, useState } from "react"
+import { LoadingSpinner } from "../Coponents/LoadingSpinner"
 
 export function Product() {
     const location = useLocation()
     const dispatchEvent = useDispatch()
     const [inWishlist, setInWishlist] = useState(false)
+    const [showSpinner, setShowSpinner] = useState(true)
     function getDecimalPart(num) {
         if (Number.isInteger(num)) {
             return '00';
@@ -95,6 +97,7 @@ export function Product() {
     return (
         <div>
             <Header></Header>
+            {location.state ? (
             <div>
                 <div className={styles.productContainer}>
                     <div className={styles.productImgDiv}>
@@ -176,6 +179,7 @@ export function Product() {
                     </div>
                 </div>
             </div>
+            ): (<LoadingSpinner title="Loading, Please wait..."></LoadingSpinner>)}
             <Footer></Footer>
         </div>
     )
