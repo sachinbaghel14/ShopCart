@@ -4,11 +4,14 @@ import styles from "./CartProductCard.module.css";
 import { useDispatch } from "react-redux";
 import { addItem } from "../../store/slices/cartSlices";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 
 
 export function CartProductCard(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch()
+    const [quantity, setQuantity] = useState(props.item.quantity)
+    const cartItems = localStorage.getItem('cartItems')
     function redirectToProduct() {
         navigate("/product", {
             state: props.item.product
@@ -21,8 +24,34 @@ export function CartProductCard(props) {
         const decimalStr = num.toString().split('.')[1];
         return Number(decimalStr);
     }
+    
+    function handleQuantityChange(event){
+        if(event.target.value<1){
+            toast.error(`Quantity Can't Be Less Then 1`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+              });
+            setQuantity(1)
+        }else{
+            setQuantity(event.target.value)
+            if (cartItems) {
+                var arrayOfItems = JSON.parse(cartItems)
+                const itemAreadyExistsIndex = arrayOfItems.findIndex(
+                    (i) => i.product.id == props.item.product.id,
+                )
+            // if product exists (index!=-1)
+            if (itemAreadyExistsIndex != -1) {
+                arrayOfItems[itemAreadyExistsIndex].quantity = event.target.value
+                localStorage.setItem('cartItems', JSON.stringify(arrayOfItems))
+                dispatch(addItem(arrayOfItems));
+                // toast.error(`Removed From Cart "${props.item.product.title}"`, {
+                //     position: toast.POSITION.BOTTOM_RIGHT
+                //   });
+            }
+            }
+        }
+        
+    }
     function handleRemoveCart() {
-        const cartItems = localStorage.getItem('cartItems')
         if (cartItems) {
             var arrayOfItems = JSON.parse(cartItems)
             const itemAreadyExistsIndex = arrayOfItems.findIndex(
@@ -66,7 +95,7 @@ export function CartProductCard(props) {
 
             <div className={styles.rightContainer}>
                 <label className={`form-label ${styles.qtyLabel}`} for="quantity1">Quantity</label>
-                <input className={`form-control ${styles.qtyInput}`} type="number" id="quantity1" min="1" value="1"></input>
+                <input className={`form-control ${styles.qtyInput}`} name="qty" type="number" id="quantity1" min={0} value={quantity} onChange={handleQuantityChange}></input>
 
                 <button className={`btn ${styles.removeBtn}`} onClick={handleRemoveCart}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" className="bi bi-x-circle" viewBox="0 0 16 16">

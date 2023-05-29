@@ -77,6 +77,7 @@ export function ProductCard(props) {
               });
         }
         localStorage.setItem('cartItems', JSON.stringify(arrayOfItems))
+        console.log(arrayOfItems)
         dispatchEvent(addItem(arrayOfItems));
         // notifyAboutCartChanges(arrayOfItems.length)
         

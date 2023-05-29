@@ -8,6 +8,9 @@ import { useNavigate } from "react-router-dom"
 import { Form } from "react-bootstrap"
 import { useFormik } from "formik";
 import * as Yup from "yup"
+import { toast } from "react-toastify"
+import { LoadingSpinner } from "../Coponents/LoadingSpinner"
+import { useState } from "react"
 
 const accountSchema = Yup.object().shape({
     firstname: Yup.string()
@@ -36,6 +39,7 @@ const accountSchema = Yup.object().shape({
 })
 
 export function Account() {
+    const [showSpinner, setShowSpinner] = useState(false)
     const dispatch = useDispatch()
     const user = useSelector(getUser)
     const cartLength = useSelector(cartQuantity)
@@ -48,6 +52,7 @@ export function Account() {
     }
 
     function handleUpdate(values) {
+        setShowSpinner(true)
         const userDetails = localStorage.getItem('userDetails')
         if (userDetails) {
             var arrayOfItems = JSON.parse(userDetails)
@@ -65,7 +70,10 @@ export function Account() {
                 localStorage.setItem('userDetails', JSON.stringify(arrayOfItems));
                 console.log("user found")
                 dispatch(addUser(arrayOfItems[itemExistsIndex]))
-                alert("Profile update successful!")
+                setShowSpinner(false)
+                toast.success("Profile update successful!", {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                  });
             }
         }
     }
@@ -79,8 +87,8 @@ export function Account() {
     return (
         <div>
             <Header></Header>
-
-            <div>
+            {showSpinner && <div className={styles.loadingSpinner}><LoadingSpinner title = "Profile updating, Please wait..."></LoadingSpinner></div>}
+           {!showSpinner && <div>
                 <div className={styles.title}>
                     <h3>Your Account</h3>
                     <button className={`btn ${styles.signout}`} onClick={handleSignout}>
@@ -255,6 +263,7 @@ export function Account() {
                     </div>
                 </div>
             </div>
+           }
 
             <Footer></Footer>
         </div>
