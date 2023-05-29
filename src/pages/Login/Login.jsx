@@ -9,6 +9,7 @@ import { useFormik } from "formik"
 import { Form } from "react-bootstrap"
 import * as Yup from "yup"
 import { LoadingSpinner } from "../Coponents/LoadingSpinner"
+import { toast } from "react-toastify"
 
 const LoginSchema = Yup.object().shape({
     email: Yup.string()
@@ -60,15 +61,23 @@ export function Login() {
                             console.log("user found")
                             dispatch(addUser(arrayOfItems[itemAreadyExistsIndex]))
                             navigate('/')
+                            toast.success("Signin Successful", {
+                                position: toast.POSITION.BOTTOM_RIGHT
+                            })
                         } else {
-                            alert("invalid email or password")
+                            toast.error("Invalid Email or Password", {
+                                position: toast.POSITION.BOTTOM_RIGHT
+                            })
                         }
                     } else {
-                        alert("invalid email or password")
+                        toast.error("Invalid Email or Password", {
+                            position: toast.POSITION.BOTTOM_RIGHT
+                        })
                     }
-
                 } else {
-                    alert("invalid email or password")
+                    toast.error("Invalid Email or Password", {
+                        position: toast.POSITION.BOTTOM_RIGHT
+                    })
                 }
                 setShowSpinner(false)
             })

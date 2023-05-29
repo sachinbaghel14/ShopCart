@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./CartProductCard.module.css";
 import { useDispatch } from "react-redux";
 import { addItem } from "../../store/slices/cartSlices";
+import { toast } from "react-toastify";
 
 
 export function CartProductCard(props) {
@@ -27,12 +28,14 @@ export function CartProductCard(props) {
             const itemAreadyExistsIndex = arrayOfItems.findIndex(
                 (i) => i.product.id == props.item.product.id,
             )
-            // if product already added to cart, increase the quantity.
         // if product exists (index!=-1)
         if (itemAreadyExistsIndex != -1) {
             arrayOfItems.splice(itemAreadyExistsIndex, 1)
             localStorage.setItem('cartItems', JSON.stringify(arrayOfItems))
             dispatch(addItem(arrayOfItems));
+            toast.error(`Removed From Cart "${props.item.product.title}"`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+              });
         }
         } 
     }

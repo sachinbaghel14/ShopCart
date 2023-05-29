@@ -7,6 +7,8 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger"
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, addWishlistItem, getWishlist } from "../../store/slices/cartSlices";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export function ProductCard(props) {
     const wishlist = useSelector(getWishlist)
@@ -65,12 +67,20 @@ export function ProductCard(props) {
         // if product exists (index!=-1)
         if (itemAreadyExistsIndex != -1) {
             arrayOfItems[itemAreadyExistsIndex].quantity += 1
+            toast.info(`Product Already In The Cart`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+              });
         } else {
             arrayOfItems.push(cartItem)
+            toast.success(`Added To Cart "${props.item.title}"`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+              });
         }
         localStorage.setItem('cartItems', JSON.stringify(arrayOfItems))
         dispatchEvent(addItem(arrayOfItems));
         // notifyAboutCartChanges(arrayOfItems.length)
+        
+        
 
     }
 
@@ -93,9 +103,15 @@ export function ProductCard(props) {
         if (itemAreadyExistsIndex != -1) {
             arrayOfWishlist.splice(itemAreadyExistsIndex,1)
             setInWishlist(false);
+            toast.error(`Removed From Wishlist "${props.item.title}"`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+              });
         } else {
             setInWishlist(true);
             arrayOfWishlist.push(whishlistItem)
+            toast.success(`Added To Wishlist "${props.item.title}"`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+              });
         }
         localStorage.setItem('whishlistItems', JSON.stringify(arrayOfWishlist))
         dispatchEvent(addWishlistItem(arrayOfWishlist));
@@ -159,7 +175,9 @@ export function ProductCard(props) {
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class={`bi bi-cart3 ${styles.crtBtnIcon}`} viewBox="0 0 16 16">
                         <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
                     </svg> Add to Cart</button>
+                    
             </div>
+            
         </div>
     )
 }

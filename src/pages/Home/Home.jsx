@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addFetchProducts } from "../../store/slices/cartSlices";
 import { LoadingSpinner } from "../Coponents/LoadingSpinner";
+import { ToastContainer } from "react-toastify";
 
 export function Home() {
     var ratings = Array(Math.floor(24)).fill(0);

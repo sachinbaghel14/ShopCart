@@ -7,6 +7,7 @@ import { Form } from "react-bootstrap"
 import { useFormik } from "formik";
 import * as Yup from "yup"
 import { LoadingSpinner } from "../Coponents/LoadingSpinner"
+import { toast } from "react-toastify"
 
 
 const SignupSchema = Yup.object().shape({
@@ -67,11 +68,16 @@ export function SignUp() {
                 console.log(response.json())
                 localStorage.setItem('userDetails', JSON.stringify([values]));
                 setShowSpinner(false)
-                alert("Signup Successful, Please Signin")
+                toast.success("Signup Successful, Please Signin", {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                })
                 navigate("/login");
             })
             .catch((err) => {
                 setShowSpinner(false)
+                toast.error("Signup Failed, Please Try Again", {
+                    position: toast.POSITION.BOTTOM_RIGHT
+                })
                 console.log(err)
             })
     }

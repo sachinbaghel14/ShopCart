@@ -8,6 +8,7 @@ import { Product } from './pages/Product/Product';
 import { Wishlist } from './pages/Wishlist/Wishlist';
 import { Cart } from './pages/Cart/Cart';
 import { Account } from './pages/Account/Account';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           {/* <Route path='login' element={<Login />} ></Route> */}
         </Routes>
       </BrowserRouter>
+      <ToastContainer></ToastContainer>
     </div>
 
   );
