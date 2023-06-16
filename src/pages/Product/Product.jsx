@@ -58,8 +58,14 @@ export function Product() {
         // if product exists (index!=-1)
         if (itemAreadyExistsIndex != -1) {
             arrayOfItems[itemAreadyExistsIndex].quantity += 1
+            toast.info(`Product Already In The Cart`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+              });
         } else {
             arrayOfItems.push(cartItem)
+            toast.success(`Added To Cart "${props.item.title}"`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+              });
         }
         localStorage.setItem('cartItems', JSON.stringify(arrayOfItems))
         dispatchEvent(addItem(arrayOfItems));
